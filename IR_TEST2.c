@@ -79,42 +79,42 @@ void Left_IR(){
 /***	Locates the Beacon ***/
 void Locate_Beacon(){
 
-	while(condition != false){
+		while(condition != false){
 
-	Right_IR();
-	Left_IR();
-	clearTimer(T1);
+		Right_IR();
+		Left_IR();
+		clearTimer(T1);
 
-	//rotate until Shortrange IR values are found
-	while(leftValue < SHORTRANGE && rightValue < SHORTRANGE){
-
-	Right_IR();
-	Left_IR();
-
-	//Once timer exceeds 5s, rotate opposite direction for longrange IR Values
-	while(time1[T1] > 5000){
+		//rotate until Shortrange IR values are found
+		while(leftValue < SHORTRANGE && rightValue < SHORTRANGE){
 
 		Right_IR();
 		Left_IR();
 
-		motor[motor1] = - Motor_On;
-		motor[motor2] =  Motor_On;
+		//Once timer exceeds 5s, rotate opposite direction for longrange IR Values
+		while(time1[T1] > 5000){
 
-		if(leftValue > LONGRANGE || rightValue > LONGRANGE && SensorValue(sonar1) > 20){
+			Right_IR();
+			Left_IR();
 
-				//if long range values are found, approach for 2 seconds and continue short range search
-				motor[motor1] =  Motor_On;
-				motor[motor2] =  Motor_On;
+			motor[motor1] = - Motor_On;
+			motor[motor2] =  Motor_On;
 
-				wait1Msec(2000);
+			if(leftValue > LONGRANGE || rightValue > LONGRANGE && SensorValue(sonar1) > 20){
 
-				motor[motor1] = OFF;
-				motor[motor2] = OFF;
+					//if long range values are found, approach for 2 seconds and continue short range search
+					motor[motor1] =  Motor_On;
+					motor[motor2] =  Motor_On;
 
-				clearTimer(T1);
+					wait1Msec(2000);
+
+					motor[motor1] = OFF;
+					motor[motor2] = OFF;
+
+					clearTimer(T1);
 
 
-				if(SensorValue(Left_Bumper) == ON || SensorValue(Right_Bumper) == ON){
+					if(SensorValue(Left_Bumper) == ON || SensorValue(Right_Bumper) == ON){
 
 						//failsafe rearrange if obstruction is hit and continue search
 
@@ -157,40 +157,40 @@ void Approach_Beacon(){
 				//approach beacon while sonar is greater than 5 inches
 		while(SensorValue(sonar1) > 5 && SensorValue(sonar1) != NoSonVal){
 
-				Right_IR();
-				Left_IR();
+			Right_IR();
+			Left_IR();
 			motor[motor1] = Motor_On;
 			motor[motor2] = Motor_On;
 
 				//if IR values get decrease, find beacon again
-			if(leftValue < LONGRANGE || rightValue < LONGRANGE){
-				Right_IR();
-				Left_IR();
+		if(leftValue < LONGRANGE || rightValue < LONGRANGE){
+			Right_IR();
+			Left_IR();
 			Locate_Beacon();
 
 		}
 
 		//if right IR difference greater than left difference correct positioning
 		if(rightValue > leftValue){
-				Right_IR();
-				Left_IR();
+			Right_IR();
+			Left_IR();
 			motor[motor1] = Motor_On;
 			motor[motor2] = OFF;
 			wait1Msec(50);
-	}
+		}
 		//if left IR difference greater than right difference correct positioning
 		if(leftValue > rightValue + 300){
-				Right_IR();
-				Left_IR();
-				motor[motor1] = OFF;
-				motor[motor2] = Motor_On;
-				wait1Msec(50);
-	}
+			Right_IR();
+			Left_IR();
+			motor[motor1] = OFF;
+			motor[motor2] = Motor_On;
+			wait1Msec(50);
+		}
 
 	}//while
 
-	motor[motor1] = OFF;
-	motor[motor2] = OFF;
+		motor[motor1] = OFF;
+		motor[motor2] = OFF;
 
 }//Approach_Beacon
 
@@ -207,38 +207,38 @@ void Discard(){
 
 	//Lower Arm
 	while(time1[T1] < 50){
-			motor[motor3] = Arm_Speed;
-		}
-			motor[motor3] = OFF;
+		motor[motor3] = Arm_Speed;
+	}
+		motor[motor3] = OFF;
 
-			wait1Msec(1500);
+		wait1Msec(1500);
 
-			clearTimer(T2);
+		clearTimer(T2);
 	//lift object
 	while(time1[T2] < 2500){
-			motor[motor3] = -Arm_Speed;
- }
+		motor[motor3] = -Arm_Speed;
+ 	}
 
- motor[motor3] = OFF;
+ 		motor[motor3] = OFF;
 
- wait1Msec(1500);
+ 		wait1Msec(1500);
 
- //backup
- motor[motor1] = - Motor_On_Slow;
- motor[motor2] = - Motor_On_Slow;
+	    //backup
+ 		motor[motor1] = - Motor_On_Slow;
+ 		motor[motor2] = - Motor_On_Slow;
 
- wait1Msec(1500);
+ 		wait1Msec(1500);
 
-//turn roughly 90 degrees
- motor[motor1] = Motor_On_Slow;
- motor[motor2] = -Motor_On_Slow;
+		//turn roughly 90 degrees
+ 		motor[motor1] = Motor_On_Slow;
+ 		motor[motor2] = -Motor_On_Slow;
 
- wait1Msec(4000);
+ 		wait1Msec(4000);
 
- motor[motor1] = OFF;
- motor[motor2] = OFF;
+ 		motor[motor1] = OFF;
+ 		motor[motor2] = OFF;
 
- clearTimer(T1);
+ 		clearTimer(T1);
 
  //move to a wall, stop 3 inches from wall, and drop object
  while(SensorValue(sonar1) > Drop_Distance || SensorValue(sonar1) == NoSonVal){
